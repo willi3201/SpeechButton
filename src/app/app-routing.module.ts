@@ -7,7 +7,8 @@ import { VozComponent } from './voz/voz.component';
 const routes: Routes = [
   { path: 'index', redirectTo: '', pathMatch: 'full' },
   { path: '', component: VozComponent },
-  { path: 'voz', component: VozComponent }
+  { path: 'voz', component: VozComponent },
+  { path: 'speech', component: SpeechComponent }
 ];
 
 @NgModule({

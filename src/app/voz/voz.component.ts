@@ -13,6 +13,7 @@ export class VozComponent implements OnInit, AfterViewInit {
   showSearchButton2: boolean;
   temp: any;
   msg: any;
+  a:any='si';
   constructor(private speechRecognitionService: SpeechService){}
   ngOnInit(): void {
     this.showSearchButton2=true;
@@ -49,7 +50,7 @@ export class VozComponent implements OnInit, AfterViewInit {
         key:["enter"],
         label: "Voz",
         description: "Voz",
-        command: e => this.activateSpeechSearchMovie2(),
+        command: e => this.activateSpeechSearchMovie2('si'),
         preventDefault:true
       },
       {
@@ -58,14 +59,23 @@ export class VozComponent implements OnInit, AfterViewInit {
         description: "Detener Voz",
         command: e => this.Stop(),
         preventDefault:true
+      },
+      {
+        key:"click",
+        label: "Click",
+        description: "click",
+        command: e=> this.activateSpeechSearchMovie2('si'),
+        preventDefault:true
       }
 
     );
   }
   Stop(){
+    this.a='no'
     this.speechRecognitionService.DestroySpeechObject();
   }
-  activateSpeechSearchMovie2(): void {
+  activateSpeechSearchMovie2(e): void {
+    this.a=e;
     //this.showSearchButton2 = false;
     //this.speechRecognitionService.record()
     this.speechRecognitionService.show()
@@ -82,7 +92,7 @@ export class VozComponent implements OnInit, AfterViewInit {
             if (err.error == "no-speech") {
                 console.log("--restatring service--");
                 this.msg+=this.temp;
-                this.activateSpeechSearchMovie2();
+                this.activateSpeechSearchMovie2(e);
             }
         },
         //completion
@@ -90,6 +100,9 @@ export class VozComponent implements OnInit, AfterViewInit {
             this.showSearchButton2 = true;
             console.log("--complete--");
             this.msg+=this.temp;
+            if(this.a!='no'){
+              this.activateSpeechSearchMovie2(e);
+            }
         });
 }
 }
