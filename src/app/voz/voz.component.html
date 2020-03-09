@@ -1,0 +1,14 @@
+<h3>Click F1 to open the help menu</h3>
+<nested-component></nested-component>
+<ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
+<ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="'Help'"></ng-keyboard-shortcuts-help>
+<!--<div class="text-center">
+    <button class="btn btn-info btn-fill btn-wd" [shortcuts]="shortcuts2" name="btnActivateSpeechSearchMovie" id="btnActivateSpeechSearchMovie" (click)="activateSpeechSearchMovie2()"
+             [disabled]="!showSearchButton2">
+         Enable Speech Search
+     </button>
+</div>-->
+<ng-keyboard-shortcuts [shortcuts]="shortcuts2"></ng-keyboard-shortcuts>
+ <textarea type="text" class="form-control border-input" name="txtSpeechSearchMovieName" id="txtSpeechSearchMovieName" value=""
+                    placeholder="Click below button and then say something!!!" [(ngModel)]="temp"></textarea>
+ <br />
