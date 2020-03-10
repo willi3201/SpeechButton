@@ -68,8 +68,37 @@ export class SpeechService {
           this.speechRecognition.continuous = false;
           this.speechRecognition.interimResults = true;
           this.speechRecognition.lang = 'es-mx';
-          this.speechRecognition.maxAlternatives = 1;
+          this.speechRecognition.maxAlternatives = 2;
           this.speechRecognition.onresult = speech => {
+            console.log(_.trim(speech.results[speech.resultIndex][0].transcript))
+          this.msg=_.trim(speech.results[speech.resultIndex][0].transcript);
+              this.zone.run(() => {
+                  observer.next(this.msg);
+              });
+          };
+          this.speechRecognition.onerror = error => {
+              observer.error(error);
+          };
+
+          this.speechRecognition.onend = () => {
+              observer.complete();
+          };
+
+          this.speechRecognition.start();
+          console.log("Say something - We are listening !!!");
+      });
+    }
+    show2(): Observable<string> {
+
+    return Observable.create(observer => {
+          const { webkitSpeechRecognition }: IWindow = <IWindow><unknown>window;
+          this.speechRecognition = new webkitSpeechRecognition();
+          //this.speechRecognition = SpeechRecognition;
+          this.speechRecognition.continuous = false;
+          this.speechRecognition.interimResults = true;
+          this.speechRecognition.lang = 'es-mx';
+          this.speechRecognition.maxAlternatives = 8;
+          this.speechRecognition.onsoundstart = speech => {
             console.log(_.trim(speech.results[speech.resultIndex][0].transcript))
           this.msg=_.trim(speech.results[speech.resultIndex][0].transcript);
               this.zone.run(() => {

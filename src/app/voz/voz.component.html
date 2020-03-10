@@ -1,4 +1,5 @@
-<h3>Click F1 to open the help menu</h3>
+<h3>Press cmd + shift to start</h3>
+<h4>Press cmd + shift to stop</h4>
 <nested-component></nested-component>
 <ng-keyboard-shortcuts [shortcuts]="shortcuts"></ng-keyboard-shortcuts>
 <ng-keyboard-shortcuts-help [key]="'f1'" [closeKey]="'escape'" [title]="'Help'"></ng-keyboard-shortcuts-help>
@@ -11,4 +12,6 @@
 <ng-keyboard-shortcuts [shortcuts]="shortcuts2"></ng-keyboard-shortcuts>
  <textarea type="text" class="form-control border-input" name="txtSpeechSearchMovieName" id="txtSpeechSearchMovieName" value=""
                     placeholder="Click below button and then say something!!!" [(ngModel)]="temp"></textarea>
- <br />
+ <br>
+ <br>
+ <textarea type="text" [(ngModel)]="msg"></textarea>

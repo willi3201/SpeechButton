@@ -11,12 +11,38 @@ import { SpeechService } from '../Services/speech.service';
   })
 export class VozComponent implements OnInit, AfterViewInit {
   showSearchButton2: boolean;
-  temp: any;
-  msg: any;
+  temp: any="";
+  msg: any="";
   a:any='si';
+  estado:boolean=false;
   constructor(private speechRecognitionService: SpeechService){}
   ngOnInit(): void {
     this.showSearchButton2=true;
+    /*this.speechRecognitionService.show2().subscribe(
+        //listener
+        (value) => {
+            this.temp =value;
+            
+            console.log(value);
+        },
+        //errror
+        (err) => {
+            console.log(err);
+            if (err.error == "no-speech") {
+                console.log("--restatring service--");
+                this.msg+=this.temp;
+                this.activateSpeechSearchMovie2('si');
+            }
+        },
+        //completion
+        () => {
+            this.showSearchButton2 = true;
+            console.log("--complete--");
+            this.msg+=this.temp;
+            if(this.a!='no'){
+              this.activateSpeechSearchMovie2('si' );
+            }
+        });*/
   }
   title = "Angular Router Demo";
   shortcuts: ShortcutInput[] = [];
@@ -47,42 +73,36 @@ export class VozComponent implements OnInit, AfterViewInit {
     );
     this.shortcuts2.push(
       {
-        key:["enter"],
+        key:["cmd + shift"],
         label: "Voz",
         description: "Voz",
-        command: e => this.activateSpeechSearchMovie2('si'),
-        preventDefault:true
-      },
-      {
-        key:["space"],
-        label: "Detener Voz",
-        description: "Detener Voz",
-        command: e => this.Stop(),
-        preventDefault:true
-      },
-      {
-        key:"click",
-        label: "Click",
-        description: "click",
-        command: e=> this.activateSpeechSearchMovie2('si'),
+        command: e => this.Estado(),
         preventDefault:true
       }
-
     );
+  }
+  Estado(){
+    if(!this.estado){
+          this.activateSpeechSearchMovie2('si')
+        }else{
+          this.Stop();
+        }
   }
   Stop(){
     this.a='no'
     this.speechRecognitionService.DestroySpeechObject();
+    this.estado=false;
   }
   activateSpeechSearchMovie2(e): void {
     this.a=e;
+    this.estado=true;
     //this.showSearchButton2 = false;
     //this.speechRecognitionService.record()
     this.speechRecognitionService.show()
         .subscribe(
         //listener
         (value) => {
-            this.temp =value;
+            this.temp =value+' ';
             
             console.log(value);
         },
@@ -91,7 +111,7 @@ export class VozComponent implements OnInit, AfterViewInit {
             console.log(err);
             if (err.error == "no-speech") {
                 console.log("--restatring service--");
-                this.msg+=this.temp;
+                this.temp='';
                 this.activateSpeechSearchMovie2(e);
             }
         },
@@ -99,10 +119,13 @@ export class VozComponent implements OnInit, AfterViewInit {
         () => {
             this.showSearchButton2 = true;
             console.log("--complete--");
+            //this.msg+=' '+this.temp;
             this.msg+=this.temp;
+            this.temp='';
             if(this.a!='no'){
               this.activateSpeechSearchMovie2(e);
             }
         });
+        
 }
 }
