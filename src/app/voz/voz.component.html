@@ -10,8 +10,29 @@
      </button>
 </div>-->
 <ng-keyboard-shortcuts [shortcuts]="shortcuts2"></ng-keyboard-shortcuts>
- <textarea type="text" class="form-control border-input" name="txtSpeechSearchMovieName" id="txtSpeechSearchMovieName" value=""
-                    placeholder="Click below button and then say something!!!" [(ngModel)]="temp"></textarea>
+<!-- <textarea type="text" class="form-control border-input" name="txtSpeechSearchMovieName" id="txtSpeechSearchMovieName" value=""
+                    placeholder="Click below button and then say something!!!" [(ngModel)]="temp" spellcheck="true"></textarea>-->
  <br>
  <br>
- <textarea type="text" [(ngModel)]="msg"></textarea>
+ <div ><textarea type="text" [(ngModel)]="msg"></textarea></div>
+
+<h3>Summernote editor</h3>
+
+<div>
+  <button (click)="enableEditor()" [disabled]="!editorDisabled">Enable</button>
+  <button (click)="disableEditor()" [disabled]="editorDisabled">Disable</button>
+</div>
+<form [formGroup]="form">
+  <input formControlName="html" 
+       [ngxSummernote]="config"
+       [ngxSummernoteDisabled]="editorDisabled"
+       (blur)="onBlur()"
+       (mediaDelete)="onDelete($event)"
+       (summernoteInit)="summernoteInit($event)" [(ngModel)]="msg" type="textarea">
+</form> 
+
+<h3>HTML</h3>
+<div [ngxSummernoteView]="form.get('html').value"></div>
+
+<h3>Code</h3>
+<pre>{{form.get('html').value}}</pre>

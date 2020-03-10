@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SpeechComponent } from './speech/speech.component';
-import { FormsModule } from '@angular/forms';
 import { VozComponent } from './voz/voz.component';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { NestedComponent } from './nested.component';
+import { NgxSummernoteModule } from 'ngx-summernote';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,10 @@ import { NestedComponent } from './nested.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     FormsModule,
+    HttpClientModule,
+    NgxSummernoteModule,
     KeyboardShortcutsModule.forRoot(),
     AppRoutingModule
   ],
