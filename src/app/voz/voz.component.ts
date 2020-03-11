@@ -18,20 +18,16 @@ export class VozComponent implements OnInit, AfterViewInit {
   msg: any="";
   a:any='si';
   estado:boolean=false;
+  frase2:any='';
   form: FormGroup;
   config:any = {
     airMode: false,
-    lang: 'es-ES',
+    lang: 'es-MX',
     tabDisable: true,
     popover: {
       table: [
         ['add', ['addRowDown', 'addRowUp', 'addColLeft', 'addColRight']],
         ['delete', ['deleteRow', 'deleteCol', 'deleteTable']],
-      ],
-      image: [
-        ['image', ['resizeFull', 'resizeHalf', 'resizeQuarter', 'resizeNone']],
-        ['float', ['floatLeft', 'floatRight', 'floatNone']],
-        ['remove', ['removeMedia']]
       ],
       link: [
         ['link', ['linkDialogShow', 'unlink']]
@@ -49,44 +45,34 @@ export class VozComponent implements OnInit, AfterViewInit {
             'clear'
           ]
         ],
-      ]
+      ],
     },
     height: '200px',
-    uploadImagePath: '/api/upload',
+    width: 'auto',
     toolbar: [
-      ['misc', ['codeview', 'undo', 'redo', 'codeBlock']],
-      [
-        'font',
-        [
-          'bold',
-          'italic',
-          'underline',
-          'strikethrough',
-          'superscript',
-          'subscript',
-          'clear'
-        ]
-      ],
+      ['misc', ['undo', 'redo']],
+      ['decorator',['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
       ['fontsize', ['fontname', 'fontsize', 'color']],
       ['para', ['style0', 'ul', 'ol', 'paragraph', 'height']],
       ['insert', ['table', 'picture', 'link', 'video', 'hr']],
-      ['customButtons', ['testBtn']]
+      ['customButtons', []]
     ],
     buttons: {
       testBtn: customButton
     },
     codeviewFilter: true,
-    codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
-    codeviewIframeFilter: true
+    //codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
+    codeviewIframeFilter: false
   };
   editorDisabled = false;
 
   get sanitizedHtml(){
     return this.sanitizer.bypassSecurityTrustHtml(this.form.get('html').value);
   }
+  
   constructor(private speechRecognitionService: SpeechService,private sanitizer: DomSanitizer){
     this.form = new FormGroup({
-      html: new FormControl()
+      text: new FormControl()
     });
   }
 
@@ -166,6 +152,7 @@ export class VozComponent implements OnInit, AfterViewInit {
   Stop(){
     this.a='no'
     this.speechRecognitionService.DestroySpeechObject();
+    this.msg=this.upper(this.msg);
     this.estado=false;
   }
   activateSpeechSearchMovie2(e): void {
@@ -201,8 +188,39 @@ export class VozComponent implements OnInit, AfterViewInit {
               this.activateSpeechSearchMovie2(e);
             }
         });
-        
 }
+upper(frase){
+  frase=this.transcod(frase);
+  console.log(frase);
+  var indice=0;
+  var indicePunto=frase.indexOf('.',indice);
+  
+  while(indicePunto>=0){
+    if(frase.substring(indice,indice+1)==('"')){
+      this.frase2='"'
+      this.frase2 += frase.substring(indice+1,indice+2).toUpperCase();
+      this.frase2 += frase.substring(indice+2,indicePunto+1)+' ';
+    
+      indice= indicePunto + 2;
+      indicePunto = frase.indexOf('.',indice);
+    }else{
+    this.frase2 += frase.substring(indice,indice+1).toUpperCase();
+    this.frase2 += frase.substring(indice+1,indicePunto+1)+' ';
+    
+    indice= indicePunto + 2;
+    indicePunto = frase.indexOf('.',indice);
+  }
+    
+  }
+  return this.frase2;
+  console.log(this.frase2);
+}
+transcod(str) {
+  var a="";
+    a = str.replace(' y aparte', '\n ').replace(' dos puntos', ':').replace(' punto ', '.').replace(' comas', ',').replace('aparte', '\n ').replace('a parte', '\n ').replace('comillas ', '"').replace(' comilla ', '"');
+    str=a;
+    return str;
+    }
 enableEditor() {
     this.editorDisabled = false;
   }
@@ -212,7 +230,9 @@ enableEditor() {
   }
 
   onBlur() {
-    console.log('Blur');
+    this.msg=this.msg.replace('<p>','').replace('</p>','').replace('<br>','');
+    this.msg=this.upper(this.msg);
+    console.log(this.msg);
   }
 
   onDelete(file) {

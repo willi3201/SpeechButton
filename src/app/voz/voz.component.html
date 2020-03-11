@@ -14,7 +14,8 @@
                     placeholder="Click below button and then say something!!!" [(ngModel)]="temp" spellcheck="true"></textarea>-->
  <br>
  <br>
- <div ><textarea type="text" [(ngModel)]="msg"></textarea></div>
+ <textarea type="text" [(ngModel)]="msg"></textarea>
+ <button (click)="upper(msg)">upper</button>
 
 <h3>Summernote editor</h3>
 
@@ -23,16 +24,9 @@
   <button (click)="disableEditor()" [disabled]="editorDisabled">Disable</button>
 </div>
 <form [formGroup]="form">
-  <input formControlName="html" 
+  <input class="input" formControlName="text" 
        [ngxSummernote]="config"
-       [ngxSummernoteDisabled]="editorDisabled"
        (blur)="onBlur()"
        (mediaDelete)="onDelete($event)"
-       (summernoteInit)="summernoteInit($event)" [(ngModel)]="msg" type="textarea">
-</form> 
-
-<h3>HTML</h3>
-<div [ngxSummernoteView]="form.get('html').value"></div>
-
-<h3>Code</h3>
-<pre>{{form.get('html').value}}</pre>
+       [(ngModel)]="msg">
+</form>
