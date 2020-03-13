@@ -1,0 +1,148 @@
+div.table {
+  display: table;
+  width: 100%;
+  height: 100%;
+  margin-left: 10px;
+  border-collapse: collapse;
+  //border: 1px solid red;
+}
+
+body {
+  transition: 0.4s;
+  background: #eeeeee;
+  color: black;
+  width: auto;
+  height: auto;
+}
+
+.black {
+  background: #212121;
+  color: rgba(163, 163, 162, 0.822);
+  button {
+    color: rgba(163, 163, 162, 0.822);
+    background: #212121;
+  }
+  input {
+    color: rgba(163, 163, 162);
+    background: #212121;
+  }
+  select {
+    color: rgba(163, 163, 162);
+    background: #212121;
+  }
+  option {
+    color: rgb(163, 163, 162);
+    background: #212121;
+  }
+  textarea {
+    color: rgba(163, 163, 162);
+    background: #212121;
+  }
+}
+.white {
+  background: #fff;
+  color: #000;
+}
+
+div.row {
+  display: table-row;
+}
+#center {
+  margin: 5%;
+}
+.top {
+  position: relative;
+  top: 5px;
+  left: 10px;
+}
+.mid {
+  height: 50% !important;
+}
+.bot {
+  bottom: 5px;
+  right: 10px;
+}
+div.cell1 {
+  display: table-cell;
+  width: 25%;
+  //border: 1px solid red;
+}
+div.cell2 {
+  display: table-cell;
+  width: 35%;
+  //border: 1px solid red;
+}
+div.cell3 {
+  display: table-cell;
+  width: 40%;
+  //border: 1px solid red;
+}
+#pdf {
+  width: 1000;
+}
+div.colspan,
+div.colspan + div.cell {
+  border: 0;
+}
+div.colspan > div {
+  width: 1px;
+}
+
+div.colspan > div > div {
+  position: relative;
+  width: 99px;
+  overflow: hidden;
+}
+#a {
+  width: 416px;
+  height: 104px;
+  border-radius: 5px;
+  //border:1px solid black;
+}
+#b {
+  width: 256px;
+  height: 58px;
+  border-radius: 5px;
+  //border:1px solid black;
+}
+#ex {
+  border-radius: 5px;
+}
+#exs {
+  border-radius: 5px;
+  width: 256px;
+}
+#exe {
+  border-radius: 5px solid black;
+}
+.img-thumbnail {
+  width: 240px;
+  height: 144px;
+}
+.aw {
+  width: 400px;
+  height: 52px;
+}
+#c {
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+}
+#as {
+  width: 1366px;
+  height: 100%;
+}
+#plugin {
+  width: 610px;
+  height: 400px;
+}
+#btn {
+  margin-left: 48%;
+  margin-right: 48%;
+  margin-top: 1%;
+  border-radius: 200px;
+}
+#btng {
+  align-items: center;
+  border-radius: 100px;
+}

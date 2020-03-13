@@ -21,7 +21,7 @@ export class VozComponent implements OnInit, AfterViewInit {
   frase2:any='';
   form: FormGroup;
   config:any = {
-    airMode: false,
+    airMode: true,
     lang: 'es-MX',
     tabDisable: true,
     popover: {
@@ -32,7 +32,7 @@ export class VozComponent implements OnInit, AfterViewInit {
       link: [
         ['link', ['linkDialogShow', 'unlink']]
       ],
-      air: [
+      air:  [
         [
           'font',
           [
@@ -43,12 +43,13 @@ export class VozComponent implements OnInit, AfterViewInit {
             'superscript',
             'subscript',
             'clear'
-          ]
+          ],
         ],
+        ['fontsize', ['fontname', 'fontsize', 'color']],
       ],
     },
     height: '200px',
-    width: 'auto',
+    width: '400px',
     toolbar: [
       ['misc', ['undo', 'redo']],
       ['decorator',['bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'clear']],
@@ -61,7 +62,7 @@ export class VozComponent implements OnInit, AfterViewInit {
       testBtn: customButton
     },
     codeviewFilter: true,
-    //codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
+    codeviewFilterRegex: /<\/*(?:applet|b(?:ase|gsound|link)|embed|frame(?:set)?|ilayer|l(?:ayer|ink)|meta|object|s(?:cript|tyle)|t(?:itle|extarea)|xml|.*onmouseover)[^>]*?>/gi,
     codeviewIframeFilter: false
   };
   editorDisabled = false;
@@ -75,63 +76,13 @@ export class VozComponent implements OnInit, AfterViewInit {
       text: new FormControl()
     });
   }
-
-
   ngOnInit(): void {
     this.showSearchButton2=true;
-    /*this.speechRecognitionService.show2().subscribe(
-        //listener
-        (value) => {
-            this.temp =value;
-            
-            console.log(value);
-        },
-        //errror
-        (err) => {
-            console.log(err);
-            if (err.error == "no-speech") {
-                console.log("--restatring service--");
-                this.msg+=this.temp;
-                this.activateSpeechSearchMovie2('si');
-            }
-        },
-        //completion
-        () => {
-            this.showSearchButton2 = true;
-            console.log("--complete--");
-            this.msg+=this.temp;
-            if(this.a!='no'){
-              this.activateSpeechSearchMovie2('si' );
-            }
-        });*/
   }
   title = "Angular Router Demo";
   shortcuts: ShortcutInput[] = [];
   shortcuts2: ShortcutInput[] = [];
   ngAfterViewInit() {
-    this.shortcuts.push(
-      {
-        key: ["?"],
-        label: "Help",
-        description: "Question mark",
-        command: e => console.log("question mark clicked", { e }),
-        preventDefault: true
-      },
-      {
-        key: ["up up down down left right left right b a enter"],
-        label: "Sequences",
-        description: "Konami code!",
-        command: (output: ShortcutEventOutput) =>
-          console.log("Konami code!!!", output)
-      },
-      {
-        key: ["cmd + b"],
-        label: "Help",
-        description: "Cmd + b",
-        command: e => console.log(e),
-        preventDefault: true
-      }
-    );
     this.shortcuts2.push(
       {
         key:["cmd + shift"],
@@ -161,11 +112,10 @@ export class VozComponent implements OnInit, AfterViewInit {
     //this.showSearchButton2 = false;
     //this.speechRecognitionService.record()
     this.speechRecognitionService.show()
-        .subscribe(
+      .subscribe(
         //listener
         (value) => {
             this.temp =value+' ';
-            
             console.log(value);
         },
         //errror
@@ -187,51 +137,76 @@ export class VozComponent implements OnInit, AfterViewInit {
             if(this.a!='no'){
               this.activateSpeechSearchMovie2(e);
             }
-        });
-}
-upper(frase){
-  frase=this.transcod(frase);
-  console.log(frase);
-  var indice=0;
-  var indicePunto=frase.indexOf('.',indice);
-  
-  while(indicePunto>=0){
-    if(frase.substring(indice,indice+1)==('"')){
-      this.frase2='"'
-      this.frase2 += frase.substring(indice+1,indice+2).toUpperCase();
-      this.frase2 += frase.substring(indice+2,indicePunto+1)+' ';
-    
-      indice= indicePunto + 2;
-      indicePunto = frase.indexOf('.',indice);
-    }else{
-    this.frase2 += frase.substring(indice,indice+1).toUpperCase();
-    this.frase2 += frase.substring(indice+1,indicePunto+1)+' ';
-    
-    indice= indicePunto + 2;
-    indicePunto = frase.indexOf('.',indice);
+        }
+    );
   }
-    
-  }
-  return this.frase2;
-  console.log(this.frase2);
-}
-transcod(str) {
-  var a="";
-    a = str.replace(' y aparte', '\n ').replace(' dos puntos', ':').replace(' punto ', '.').replace(' comas', ',').replace('aparte', '\n ').replace('a parte', '\n ').replace('comillas ', '"').replace(' comilla ', '"');
-    str=a;
-    return str;
+  upper(frase) {
+        frase = this.transcod(frase);
+        var ind;
+        var i = frase.indexOf('. ', ind);
+        while (i >= 0) {
+            frase = frase.replace('. ', '.');
+            i = frase.indexOf('. ', ind)
+        }
+        //frase=frase.replace(' ','').replace('. ','.').replace('. ','.');
+        var indice = 0;
+        var indicePunto = frase.indexOf('.', indice);
+        if (indicePunto < 0) {
+            return frase;
+        } else {
+            while (indicePunto >= 0) {
+                if (frase.substring(indice, indice + 1) == ('"')) {
+                    this.frase2 = '"'
+                    this.frase2 += frase.substring(indice + 1, indice + 2).toUpperCase();
+                    this.frase2 += frase.substring(indice + 2, indicePunto + 1) + ' ';
+                    indice = indicePunto + 2;
+                    indicePunto = frase.indexOf('.', indice);
+                } else {
+                    if (frase.substring(indice, indice + 1) != "\n") {
+                        this.frase2 += frase.substring(indice, indice + 1).toUpperCase();
+                        this.frase2 += frase.substring(indice + 1, indicePunto + 1) + ' ';
+                        indice = indicePunto + 1;
+                        indicePunto = frase.indexOf('.', indice);
+                    } else {
+                        this.frase2 += '\n';
+                        indice++;
+                    }
+                }
+            }
+            this.msg=this.frase2;
+            return '    '+this.frase2 + ' ';
+        }
     }
-enableEditor() {
+   //replace
+    replace(str){
+      str+=' ';
+        var n = str.search(' punto ');
+        var wc = str.length
+        while(n>0 && n<wc){
+        str = str.replace('punto y aparte', '.\n').replace(' dos puntos', ':').replace(' punto ', '.').replace(' comas', ',').replace('aparte', '\n ').replace('a parte', '\n ').replace('comillas ', '"').replace(' comilla ', '"').replace('puntos suspensivos','...').replace('etcetera','etc.');
+        wc=str.length;
+        n=str.search(' punto ');
+        console.log(n);
+        console.log(wc);
+      }
+        console.log(n,wc)
+        return str;
+    }
+    //metodo de traduccion de palabras a simbolos
+    transcod(str) {
+        console.log('//msg=' + str);
+        str=this.replace(str);
+        console.log(str); 
+        return str;
+    }
+  enableEditor() {
     this.editorDisabled = false;
   }
 
   disableEditor() {
     this.editorDisabled = true;
   }
-
   onBlur() {
-    this.msg=this.msg.replace('<p>','').replace('</p>','').replace('<br>','');
-    this.msg=this.upper(this.msg);
     console.log(this.msg);
   }
 

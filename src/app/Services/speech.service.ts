@@ -34,7 +34,7 @@ export class SpeechService {
                   var result = speech.results[speech.resultIndex];
                   var transcript = result[0].transcript;
                   if (result.isFinal) {
-                      if (result[0].confidence < 0.2) {
+                      if (result[0].confidence < 0.3) {
                           console.log("Unrecognized result - Please try again");
                       }
                       else {

@@ -9,13 +9,15 @@ import { NestedComponent } from './nested.component';
 import { NgxSummernoteModule } from 'ngx-summernote';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { SummerComponent } from './summer/summer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     SpeechComponent,
     VozComponent,
-    NestedComponent
+    NestedComponent,
+    SummerComponent
   ],
   imports: [
     BrowserModule,
