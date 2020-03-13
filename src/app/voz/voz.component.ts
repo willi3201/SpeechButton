@@ -102,8 +102,8 @@ export class VozComponent implements OnInit, AfterViewInit {
   }
   Stop(){
     this.a='no'
-    this.speechRecognitionService.DestroySpeechObject();
     this.msg=this.upper(this.msg);
+    this.speechRecognitionService.DestroySpeechObject();
     this.estado=false;
   }
   activateSpeechSearchMovie2(e): void {
@@ -115,7 +115,7 @@ export class VozComponent implements OnInit, AfterViewInit {
       .subscribe(
         //listener
         (value) => {
-            this.temp =value+' ';
+            this.temp =value;
             console.log(value);
         },
         //errror
@@ -159,7 +159,7 @@ export class VozComponent implements OnInit, AfterViewInit {
                     this.frase2 = '"'
                     this.frase2 += frase.substring(indice + 1, indice + 2).toUpperCase();
                     this.frase2 += frase.substring(indice + 2, indicePunto + 1) + ' ';
-                    indice = indicePunto + 2;
+                    indice = indicePunto + 1;
                     indicePunto = frase.indexOf('.', indice);
                 } else {
                     if (frase.substring(indice, indice + 1) != "\n") {
@@ -173,29 +173,32 @@ export class VozComponent implements OnInit, AfterViewInit {
                     }
                 }
             }
+            console.log(this.frase2)
             this.msg=this.frase2;
-            return '    '+this.frase2 + ' ';
+            return this.frase2 + ' ';
         }
     }
    //replace
-    replace(str){
-      str+=' ';
-        var n = str.search(' punto ');
+    replace(str,b){
+        //var n = str.search(b);
+        var n=0;
         var wc = str.length
-        while(n>0 && n<wc){
-        str = str.replace('punto y aparte', '.\n').replace(' dos puntos', ':').replace(' punto ', '.').replace(' comas', ',').replace('aparte', '\n ').replace('a parte', '\n ').replace('comillas ', '"').replace(' comilla ', '"').replace('puntos suspensivos','...').replace('etcetera','etc.');
-        wc=str.length;
-        n=str.search(' punto ');
-        console.log(n);
-        console.log(wc);
+        while(n<wc){
+        str = str.replace(' dos puntos', ':').replace(' punto ', '.').replace(' coma ', ',').replace('aparte', '\n ').replace('a parte', '\n ').replace('comillas', '"').replace('comilla ', '"').replace('puntos suspensivos','...').replace('etcetera','etc.');
+        //wc=str.length;
+        //n=str.search(b);
+        n++;
       }
+
+      str=str.replace(' .','.');
         console.log(n,wc)
         return str;
     }
     //metodo de traduccion de palabras a simbolos
     transcod(str) {
+        str+='.';
         console.log('//msg=' + str);
-        str=this.replace(str);
+        str=this.replace(str,' punto ');
         console.log(str); 
         return str;
     }
